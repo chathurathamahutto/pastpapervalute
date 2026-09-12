@@ -842,8 +842,11 @@ function uploadToCatbox(formData, onProgress) {
 /* ============================================================
    DOWNLOAD
    ============================================================ */
-// Forces the PDF to download straight from our own page (via blob),
-// instead of just opening/redirecting to the catbox.moe link.
+// DoE papers are proxied + watermarked through our own /api/download
+// endpoint (same-origin fetch => no CORS issues, and the visitor's browser
+// never has to touch doenets.lk directly).
+// Community (user-uploaded, browser-only) papers don't exist on the server,
+// so those fall back to a direct client-side blob fetch.
 async function downloadPaper(id) {
   const p = papers.find(x => x.id === id);
   if (!p) return;
@@ -861,13 +864,10 @@ async function downloadPaper(id) {
     showToast(ok ? "Download started!" : "Download started (opened in a new tab)", ok ? "success" : "info");
   };
 
-  try {
-    const res = await fetch(p.url);
-    if (!res.ok) throw new Error("Network response was not ok");
-    const blob = await res.blob();
-    const blobUrl = URL.createObjectURL(blob);
-    const filename = (p.filename && p.filename.trim()) || `${(p.title || "paper").replace(/[^\w\- ]+/g, "").trim() || "paper"} - ${p.year || ""} - ${p.medium || ""}.pdf`;
+  const fallbackFilename = (p.filename && p.filename.trim()) || `${(p.title || "paper").replace(/[^\w\- ]+/g, "").trim() || "paper"} - ${p.year || ""} - ${p.medium || ""}.pdf`;
 
+  const triggerBlobDownload = (blob, filename) => {
+    const blobUrl = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = blobUrl;
     a.download = filename;
@@ -875,10 +875,39 @@ async function downloadPaper(id) {
     a.click();
     a.remove();
     setTimeout(() => URL.revokeObjectURL(blobUrl), 4000);
+  };
+
+  // ---- Server-hosted DoE papers: go through our own watermarking proxy ----
+  if (p.source === "doenet") {
+    try {
+      const res = await fetch(`/api/download?id=${encodeURIComponent(p.id)}`);
+      if (!res.ok) throw new Error("Proxy download failed with status " + res.status);
+      const blob = await res.blob();
+
+      let filename = fallbackFilename;
+      const disposition = res.headers.get("Content-Disposition") || "";
+      const match = disposition.match(/filename="?([^"]+)"?/i);
+      if (match && match[1]) filename = match[1];
+
+      triggerBlobDownload(blob, filename);
+      finish(true);
+      return;
+    } catch (err) {
+      console.error("Server-side download proxy failed, falling back:", err);
+      // fall through to the generic client-side attempt below
+    }
+  }
+
+  // ---- Community uploads (or proxy fallback): best-effort direct fetch ----
+  try {
+    const res = await fetch(p.url);
+    if (!res.ok) throw new Error("Network response was not ok");
+    const blob = await res.blob();
+    triggerBlobDownload(blob, fallbackFilename);
     finish(true);
   } catch (err) {
     console.error("Direct download failed, falling back to opening the file:", err);
-    // Some hosts don't allow cross-origin fetch — fall back to opening the file
+    // Last resort — some hosts don't allow cross-origin fetch at all
     window.open(p.url, "_blank");
     finish(false);
   }

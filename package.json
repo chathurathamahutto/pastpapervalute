@@ -1,0 +1,9 @@
+{
+  "name": "pastpapervalute",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sri Lanka Past Papers site — Netlify Function proxy that watermarks PDFs and serves them from our own domain.",
+  "dependencies": {
+    "pdf-lib": "^1.17.1"
+  }
+}
