@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Past Papers — Sri Lanka Past Papers Library</title>
+<meta name="description" content="Free Sri Lanka O/L and A/L past papers." />
+
+<link rel="icon" type="image/png" href="src/logo.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Poppins:wght@600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: { sans: ['Inter', 'sans-serif'], display: ['Poppins', 'sans-serif'] },
+        colors: {
+          brand: { 50:'#eef2ff',100:'#e0e7ff',200:'#c7d2fe',300:'#a5b4fc',400:'#818cf8',500:'#6366f1',600:'#4f46e5',700:'#4338ca',800:'#3730a3',900:'#312e81' },
+        },
+        animation: { 'float':'float 6s ease-in-out infinite', 'gradient':'gradient 8s ease infinite' },
+        keyframes: {
+          float: { '0%,100%':{transform:'translateY(0)'}, '50%':{transform:'translateY(-20px)'} },
+          gradient: { '0%,100%':{backgroundPosition:'0% 50%'}, '50%':{backgroundPosition:'100% 50%'} },
+        },
+      },
+    },
+  };
+</script>
+
+<style>
+  * { -webkit-font-smoothing: antialiased; }
+  body { background: #0a0a15; color: #e5e7eb; min-height: 100vh; }
+  .glass { background: rgba(30,30,50,0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.08); }
+  .glass-strong { background: rgba(20,20,40,0.85); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(255,255,255,0.1); }
+  .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%); background-size: 200% 200%; animation: gradient 8s ease infinite; }
+  .gradient-text { background: linear-gradient(135deg, #a5b4fc 0%, #f0abfc 50%, #67e8f9 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .card-hover { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+  .card-hover:hover { transform: translateY(-6px); box-shadow: 0 20px 40px -12px rgba(99,102,241,0.4); border-color: rgba(165,180,252,0.3); }
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: #0a0a15; }
+  ::-webkit-scrollbar-thumb { background: #4f46e5; border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: #6366f1; }
+  .modal-overlay { background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); }
+  .noise::before { content: ''; position: absolute; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E"); pointer-events: none; opacity: 0.4; }
+  .dropdown-enter { animation: ddIn .2s ease-out; }
+  @keyframes ddIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+  .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .spin-slow { animation: spin 2s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  /* Falcon icon styling */
+  .falcon-icon { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+  .falcon-badge:hover .falcon-icon { transform: scale(1.1) rotate(-6deg); }
+</style>
+</head>
+<body class="font-sans">
+
+<!-- ===== NAVBAR ===== -->
+<nav class="sticky top-0 z-40 glass-strong">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <a href="#" class="flex items-center gap-3 group falcon-badge">
+        <div class="relative">
+          <img src="src/logo.png" alt="Past Papers Logo" class="w-11 h-11 rounded-xl object-cover ring-2 ring-brand-500/40 shadow-lg shadow-brand-500/30 group-hover:scale-105 transition" />
+          <span class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center ring-2 ring-[#0a0a15]">
+            <!-- Falcon Icon -->
+            <svg class="falcon-icon w-3 h-3 text-white" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
+              <path d="M28 4c-2 0-3.2 1-4 2-1-3-4-5-8-5S9 3 8 6c-.8-1-2-2-4-2 1 2 2 3.2 3 4-2 1-3 3-3 5 0 4 3 7 7 8l1 7h2.5l1-6h4l1 6H23l1-7c4-1 7-4 7-8 0-2-1-4-3-5 1-.8 2-2 3-4z"/>
+            </svg>
+          </span>
+        </div>
+        <div>
+          <div class="font-display font-extrabold text-lg leading-tight gradient-text">Past Papers</div>
+          <div class="text-[10px] text-gray-400 leading-tight">Sri Lanka's Paper Library</div>
+        </div>
+      </a>
+      <div class="hidden md:flex items-center gap-1">
+        <a href="#papers" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition"><i class="fas fa-layer-group mr-1"></i> Papers</a>
+        <a href="#about" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition"><i class="fas fa-circle-info mr-1"></i> About</a>
+        <a href="https://t.me/SL_pastpaper_updates" target="_blank" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition"><i class="fab fa-telegram mr-1"></i> Updates</a>
+        <button onclick="openUploadModal()" class="ml-2 px-4 py-2 rounded-lg text-sm font-semibold bg-white/10 hover:bg-white/15 text-white transition"><i class="fas fa-cloud-arrow-up mr-1"></i> Upload</button>
+        <button onclick="openLoginModal()" id="loginBtn" class="ml-1 px-4 py-2 rounded-lg text-sm font-semibold gradient-bg text-white shadow-lg shadow-brand-500/30"><i class="fas fa-user-shield mr-1"></i> Admin</button>
+        <button onclick="adminLogout()" id="logoutBtn" class="hidden ml-1 px-4 py-2 rounded-lg text-sm font-semibold bg-red-500/20 text-red-300 hover:bg-red-500/30 transition"><i class="fas fa-right-from-bracket mr-1"></i> Logout</button>
+      </div>
+      <button onclick="toggleMobileMenu()" class="md:hidden w-10 h-10 rounded-lg glass flex items-center justify-center"><i class="fas fa-bars"></i></button>
+    </div>
+    <div id="mobileMenu" class="hidden md:hidden pb-4 space-y-1">
+      <a href="#papers" onclick="toggleMobileMenu()" class="block px-4 py-2 rounded-lg text-sm text-gray-300 hover:bg-white/5">Papers</a>
+      <a href="#about" onclick="toggleMobileMenu()" class="block px-4 py-2 rounded-lg text-sm text-gray-300 hover:bg-white/5">About</a>
+      <a href="https://t.me/SL_pastpaper_updates" target="_blank" class="block px-4 py-2 rounded-lg text-sm text-gray-300 hover:bg-white/5">Telegram</a>
+      <button onclick="openUploadModal()" class="w-full text-left px-4 py-2 rounded-lg text-sm text-gray-300 hover:bg-white/5">Upload</button>
+      <button onclick="openLoginModal()" class="w-full text-left px-4 py-2 rounded-lg text-sm text-brand-300 hover:bg-white/5">Admin</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== ADMIN BANNER ===== -->
+<div id="adminBanner" class="hidden bg-gradient-to-r from-brand-600 to-purple-600 text-white">
+  <div class="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between text-sm">
+    <div class="flex items-center gap-2"><i class="fas fa-shield-halved"></i><span>Admin Mode — <strong>admin</strong></span></div>
+    <div class="flex gap-2">
+      <button onclick="openAdminDashboard()" class="px-3 py-1 rounded-lg bg-white/20 hover:bg-white/30 text-xs font-semibold transition"><i class="fas fa-gauge-high mr-1"></i> Dashboard</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== HERO ===== -->
+<section class="relative overflow-hidden noise">
+  <div class="absolute inset-0 -z-10">
+    <div class="absolute top-20 -left-20 w-96 h-96 bg-brand-600/30 rounded-full blur-[120px] animate-float"></div>
+    <div class="absolute top-40 right-0 w-96 h-96 bg-purple-600/30 rounded-full blur-[120px] animate-float" style="animation-delay:2s"></div>
+    <div class="absolute bottom-0 left-1/2 w-96 h-96 bg-pink-600/20 rounded-full blur-[120px] animate-float" style="animation-delay:4s"></div>
+  </div>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-20 md:pt-24 md:pb-28">
+    <div class="max-w-4xl mx-auto text-center">
+      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-6 text-sm">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="text-gray-300" id="syncStatus">Loading papers...</span>
+      </div>
+      <h1 class="font-display text-4xl sm:text-5xl md:text-7xl font-black leading-tight mb-6">
+        <span class="text-white">Sri Lanka's </span><span class="gradient-text">Past Papers</span><br>
+        <span class="text-white">Made </span><span class="gradient-text">Beautiful</span>
+      </h1>
+      <p class="text-gray-400 text-lg md:text-xl mb-10 max-w-2xl mx-auto leading-relaxed">
+        O/L සහ A/L ගිය ප්‍රශ්න පත්‍ර — සියලුම විෂයන්, සියලුම වර්ෂ. Instant download, completely free.
+      </p>
+      <div class="max-w-2xl mx-auto">
+        <div class="glass rounded-2xl p-2 flex flex-col sm:flex-row gap-2 shadow-2xl">
+          <div class="flex-1 relative">
+            <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-500"></i>
+            <input id="heroSearch" type="text" placeholder="Search by subject, year, or exam..." oninput="onSearchInput(this.value)" class="w-full bg-transparent pl-12 pr-4 py-3.5 text-white placeholder-gray-500 outline-none text-sm" />
+          </div>
+          <button onclick="scrollToPapers()" class="px-6 py-3.5 rounded-xl gradient-bg font-semibold text-white shadow-lg shadow-brand-500/30"><i class="fas fa-bolt mr-1"></i> Search</button>
+        </div>
+      </div>
+      <div class="grid grid-cols-3 gap-4 md:gap-8 mt-12 max-w-3xl mx-auto">
+        <div class="glass rounded-2xl p-4 md:p-6"><div class="text-3xl md:text-4xl font-black gradient-text" id="statPapers">0</div><div class="text-xs md:text-sm text-gray-400 mt-1">Papers</div></div>
+        <div class="glass rounded-2xl p-4 md:p-6"><div class="text-3xl md:text-4xl font-black gradient-text" id="statDownloads">0</div><div class="text-xs md:text-sm text-gray-400 mt-1">Downloads</div></div>
+        <div class="glass rounded-2xl p-4 md:p-6"><div class="text-3xl md:text-4xl font-black gradient-text" id="statSubjects">0</div><div class="text-xs md:text-sm text-gray-400 mt-1">Subjects</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PAPERS ===== -->
+<section id="papers" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8">
+    <div>
+      <h2 class="font-display text-3xl md:text-4xl font-black mb-1"><span class="gradient-text">Explore</span> <span class="text-white">Papers</span></h2>
+      <p class="text-gray-400 text-sm">Browse our complete collection</p>
+    </div>
+    <div id="resultCount" class="text-sm text-gray-400"></div>
+  </div>
+
+  <div class="glass rounded-2xl p-4 mb-8">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+      <div class="relative">
+        <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 text-sm"></i>
+        <input id="filterSearch" type="text" placeholder="Search..." oninput="applyFilters()" class="w-full bg-white/5 border border-white/10 rounded-xl pl-11 pr-4 py-3 text-sm text-white placeholder-gray-500 outline-none focus:border-brand-400 transition" />
+      </div>
+      <select id="filterExam" onchange="applyFilters()" class="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-brand-400 transition cursor-pointer">
+        <option value="">All Exams</option>
+        <option value="O/L">G.C.E. O/L</option>
+        <option value="A/L">G.C.E. A/L</option>
+        <option value="Grade 5">Grade 5</option>
+        <option value="Other">Other</option>
+      </select>
+      <select id="filterYear" onchange="applyFilters()" class="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-brand-400 transition cursor-pointer">
+        <option value="">All Years</option>
+      </select>
+      <select id="filterMedium" onchange="applyFilters()" class="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-brand-400 transition cursor-pointer">
+        <option value="">All Mediums</option>
+        <option value="Sinhala">Sinhala</option>
+        <option value="English">English</option>
+        <option value="Tamil">Tamil</option>
+      </select>
+    </div>
+  </div>
+
+  <div id="papersGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5"></div>
+
+  <div id="emptyState" class="hidden text-center py-20">
+    <div class="w-20 h-20 rounded-2xl glass mx-auto flex items-center justify-center mb-4"><i class="fas fa-inbox text-3xl text-gray-500"></i></div>
+    <h3 class="text-xl font-bold mb-2">No papers found</h3>
+    <p class="text-gray-400 text-sm mb-6">Try changing filters or upload a paper yourself!</p>
+    <button onclick="openUploadModal()" class="px-6 py-3 rounded-xl gradient-bg font-semibold text-white shadow-lg shadow-brand-500/30"><i class="fas fa-cloud-arrow-up mr-2"></i> Upload Paper</button>
+  </div>
+
+  <div id="loadMoreWrap" class="hidden text-center mt-8">
+    <button onclick="loadMore()" class="px-8 py-3 rounded-xl glass font-semibold hover:bg-white/10 transition"><i class="fas fa-arrow-down mr-2"></i> Load More</button>
+  </div>
+</section>
+
+<!-- ===== ABOUT ===== -->
+<section id="about" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+  <div class="text-center mb-12">
+    <h2 class="font-display text-3xl md:text-4xl font-black mb-3">Why <span class="gradient-text">Past Papers</span>?</h2>
+    <p class="text-gray-400 max-w-2xl mx-auto">Everything you need to ace your exams</p>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="glass rounded-2xl p-6 card-hover">
+      <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-500 to-purple-500 flex items-center justify-center mb-4 shadow-lg"><i class="fas fa-rotate text-white text-xl"></i></div>
+      <h3 class="font-display font-bold text-lg mb-2">Always Updated</h3>
+      <p class="text-gray-400 text-sm leading-relaxed">Papers sync directly from the Department of Examinations Sri Lanka.</p>
+    </div>
+    <div class="glass rounded-2xl p-6 card-hover">
+      <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center mb-4 shadow-lg"><i class="fas fa-cloud text-white text-xl"></i></div>
+      <h3 class="font-display font-bold text-lg mb-2">Community Uploads</h3>
+      <p class="text-gray-400 text-sm leading-relaxed">Anyone can share papers via Catbox. Help students across Sri Lanka.</p>
+    </div>
+    <div class="glass rounded-2xl p-6 card-hover">
+      <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-pink-500 to-orange-500 flex items-center justify-center mb-4 shadow-lg"><i class="fas fa-mobile-screen text-white text-xl"></i></div>
+      <h3 class="font-display font-bold text-lg mb-2">Works Anywhere</h3>
+      <p class="text-gray-400 text-sm leading-relaxed">Fully responsive — download papers on your phone, tablet, or desktop.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="mt-16 border-t border-white/5">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
+      <div class="md:col-span-2">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="relative">
+            <img src="src/logo.png" alt="Past Papers Logo" class="w-10 h-10 rounded-xl object-cover ring-2 ring-brand-500/40 shadow-lg" />
+            <span class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center ring-2 ring-[#0a0a15]">
+              <svg class="w-3 h-3 text-white" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
+                <path d="M28 4c-2 0-3.2 1-4 2-1-3-4-5-8-5S9 3 8 6c-.8-1-2-2-4-2 1 2 2 3.2 3 4-2 1-3 3-3 5 0 4 3 7 7 8l1 7h2.5l1-6h4l1 6H23l1-7c4-1 7-4 7-8 0-2-1-4-3-5 1-.8 2-2 3-4z"/>
+              </svg>
+            </span>
+          </div>
+          <span class="font-display font-extrabold text-lg gradient-text">Past Papers</span>
+        </div>
+        <p class="text-gray-400 text-sm leading-relaxed max-w-md mb-6">Free past paper library for Sri Lankan students. Built with ❤️ for learners everywhere.</p>
+        <div class="flex gap-3">
+          <a href="https://t.me/SL_pastpaper_updates" target="_blank" class="w-10 h-10 rounded-lg glass flex items-center justify-center hover:bg-brand-500/20 transition group" title="Telegram"><i class="fab fa-telegram text-lg text-gray-300 group-hover:text-sky-400 transition"></i></a>
+          <a href="https://chathuradev.netlify.app/" target="_blank" class="w-10 h-10 rounded-lg glass flex items-center justify-center hover:bg-brand-500/20 transition group" title="Website"><i class="fas fa-globe text-lg text-gray-300 group-hover:text-brand-400 transition"></i></a>
+          <a href="https://chathuradev.netlify.app/" target="_blank" class="w-10 h-10 rounded-lg glass flex items-center justify-center hover:bg-brand-500/20 transition group" title="LinkedIn"><i class="fab fa-linkedin text-lg text-gray-300 group-hover:text-blue-400 transition"></i></a>
+          <a href="mailto:hello@chathuradev.netlify.app" class="w-10 h-10 rounded-lg glass flex items-center justify-center hover:bg-brand-500/20 transition group" title="Email"><i class="fas fa-envelope text-lg text-gray-300 group-hover:text-pink-400 transition"></i></a>
+        </div>
+      </div>
+      <div>
+        <h4 class="font-display font-bold text-white mb-4 text-sm uppercase tracking-wider">Explore</h4>
+        <ul class="space-y-2 text-sm">
+          <li><a href="#papers" class="text-gray-400 hover:text-white transition">All Papers</a></li>
+          <li><a href="#" onclick="openUploadModal();return false" class="text-gray-400 hover:text-white transition">Upload Paper</a></li>
+          <li><a href="https://t.me/SL_pastpaper_updates" target="_blank" class="text-gray-400 hover:text-white transition">Telegram</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-display font-bold text-white mb-4 text-sm uppercase tracking-wider">Developer</h4>
+        <ul class="space-y-2 text-sm">
+          <li><a href="https://chathuradev.netlify.app/" target="_blank" class="text-gray-400 hover:text-white transition flex items-center gap-2"><i class="fas fa-code text-xs"></i> Chathura Hansaka</a></li>
+          <li><a href="https://chathuradev.netlify.app/" target="_blank" class="text-gray-400 hover:text-white transition flex items-center gap-2"><i class="fab fa-linkedin text-xs"></i> LinkedIn</a></li>
+          <li><a href="https://t.me/SL_pastpaper_updates" target="_blank" class="text-gray-400 hover:text-white transition flex items-center gap-2"><i class="fab fa-telegram text-xs"></i> @SL_pastpaper_updates</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4">
+      <p class="text-gray-500 text-xs">© <span id="year"></span> Past Papers. Made with <i class="fas fa-heart text-pink-500"></i> by <a href="https://chathuradev.netlify.app/" target="_blank" class="text-brand-400 hover:text-brand-300 font-semibold">Chathura Hansaka</a></p>
+      <div class="flex items-center gap-4 text-xs text-gray-500">
+        <a href="#" class="hover:text-white transition">Privacy</a><span>•</span>
+        <a href="#" class="hover:text-white transition">Terms</a><span>•</span>
+        <span><i class="fas fa-shield-halved text-emerald-400"></i> Secured</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== LOGIN MODAL ===== -->
+<div id="loginModal" class="hidden fixed inset-0 z-50 items-center justify-center p-4 modal-overlay">
+  <div class="glass-strong rounded-2xl w-full max-w-md p-6 md:p-8 relative dropdown-enter">
+    <button onclick="closeLoginModal()" class="absolute top-4 right-4 w-8 h-8 rounded-lg hover:bg-white/10 flex items-center justify-center transition"><i class="fas fa-times"></i></button>
+    <div class="text-center mb-6">
+      <div class="w-16 h-16 rounded-2xl gradient-bg mx-auto flex items-center justify-center mb-4 shadow-lg shadow-brand-500/30"><i class="fas fa-user-shield text-white text-2xl"></i></div>
+      <h2 class="font-display text-2xl font-black text-white mb-1">Admin Login</h2>
+    </div>
+    <form onsubmit="adminLogin(event)" class="space-y-4">
+      <div>
+        <label class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 block">Username</label>
+        <div class="relative"><i class="fas fa-user absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 text-sm"></i>
+          <input id="loginUser" type="text" required placeholder="admin" class="w-full bg-white/5 border border-white/10 rounded-xl pl-11 pr-4 py-3 text-sm text-white placeholder-gray-500 outline-none focus:border-brand-400 transition" /></div>
+      </div>
+      <div>
+        <label class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 block">Password</label>
+        <div class="relative"><i class="fas fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 text-sm"></i>
+          <input id="loginPass" type="password" required placeholder="••••••••" class="w-full bg-white/5 border border-white/10 rounded-xl pl-11 pr-4 py-3 text-sm text-white placeholder-gray-500 outline-none focus:border-brand-400 transition" /></div>
+      </div>
+      <div id="loginError" class="hidden text-red-400 text-sm text-center bg-red-500/10 rounded-lg py-2 px-4"></div>
+      <button type="submit" class="w-full py-3.5 rounded-xl gradient-bg font-semibold text-white shadow-lg shadow-brand-500/30"><i class="fas fa-sign-in-alt mr-2"></i> Login</button>
+      <p class="text-center text-xs text-gray-500">Default: <code class="bg-white/5 px-2 py-0.5 rounded text-brand-300">admin</code> / <code class="bg-white/5 px-2 py-0.5 rounded text-brand-300">admin123</code></p>
+    </form>
+  </div>
+</div>
+
+<!-- ===== UPLOAD MODAL ===== -->
+<div id="uploadModal" class="hidden fixed inset-0 z-50 items-center justify-center p-4 modal-overlay">
+  <div class="glass-strong rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 md:p-8 relative dropdown-enter">
+    <button onclick="closeUploadModal()" class="absolute top-4 right-4 w-8 h-8 rounded-lg hover:bg-white/10 flex items-center justify-center transition"><i class="fas fa-times"></i></button>
+    <div class="mb-6">
+      <div class="w-14 h-14 rounded-2xl gradient-bg flex items-center justify-center mb-4 shadow-lg shadow-brand-500/30"><i class="fas fa-cloud-arrow-up text-white text-xl"></i></div>
+      <h2 class="font-display text-2xl font-black text-white mb-1">Upload a Paper</h2>
+      <p class="text-gray-400 text-sm">PDF upload කරලා Catbox.moe එකට යවනවා</p>
+    </div>
+    <form onsubmit="uploadPaper(event)" class="space-y-4">
+      <div>
+        <label class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 block">PDF File *</label>
+        <div id="dropZone" class="border-2 border-dashed border-white/15 rounded-xl p-6 text-center hover:border-brand-400 hover:bg-white/5 transition cursor-pointer" onclick="document.getElementById('fileInput').click()" ondragover="event.preventDefault(); this.classList.add('border-brand-400','bg-brand-500/10')" ondragleave="this.classList.remove('border-brand-400','bg-brand-500/10')" ondrop="handleFileDrop(event)">
+          <i class="fas fa-file-pdf text-3xl text-gray-500 mb-3"></i>
+          <p class="text-sm text-gray-300 font-medium" id="dropText">Drop PDF here or click to browse</p>
+          <p class="text-xs text-gray-500 mt-1">Max 200 MB (Catbox limit)</p>
+          <input id="fileInput" type="file" accept=".pdf" class="hidden" onchange="handleFileSelect(event)" />
+        </div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div><label class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 block">Title *</label><input id="upTitle" type="text" required placeholder="2024 O/L Mathematics" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 outline-none focus:border-brand-400 transition" /></div>
+        <div><label class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 block">Subject *</label><input id="upSubject" type="text" required placeholder="Mathematics" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 outline-none focus:border-brand-400 transition" /></div>
+        <div><label class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 block">Exam *</label><select id="upExam" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-brand-400 transition cursor-pointer"><option value="O/L">G.C.E. O/L</option><option value="A/L">G.C.E. A/L</option><option value="Grade 5">Grade 5</option><option value="Other">Other</option></select></div>
+        <div><label class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 block">Year *</label><input id="upYear" type="number" required min="1990" max="2030" value="2024" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-brand-400 transition" /></div>
+        <div><label class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 block">Medium *</label><select id="upMedium" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-brand-400 transition cursor-pointer"><option value="Sinhala">Sinhala</option><option value="English">English</option><option value="Tamil">Tamil</option></select></div>
+        <div><label class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 block">Uploader</label><input id="upUploader" type="text" placeholder="Anonymous" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 outline-none focus:border-brand-400 transition" /></div>
+      </div>
+      <div id="uploadProgress" class="hidden">
+        <div class="flex items-center justify-between text-xs mb-2"><span class="text-gray-400" id="progressLabel">Uploading...</span><span class="text-brand-300 font-semibold" id="progressPct">0%</span></div>
+        <div class="w-full bg-white/5 rounded-full h-2 overflow-hidden"><div id="progressBar" class="h-full gradient-bg rounded-full transition-all" style="width:0%"></div></div>
+      </div>
+      <div id="uploadError" class="hidden text-red-400 text-sm bg-red-500/10 rounded-lg py-2 px-4"></div>
+      <div class="flex gap-3 pt-2">
+        <button type="button" onclick="closeUploadModal()" class="flex-1 py-3.5 rounded-xl glass font-semibold text-white hover:bg-white/10 transition">Cancel</button>
+        <button type="submit" id="uploadBtn" class="flex-1 py-3.5 rounded-xl gradient-bg font-semibold text-white shadow-lg shadow-brand-500/30"><i class="fas fa-cloud-arrow-up mr-2"></i> Upload</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ===== ADMIN DASHBOARD ===== -->
+<div id="adminModal" class="hidden fixed inset-0 z-50 items-center justify-center p-4 modal-overlay">
+  <div class="glass-strong rounded-2xl w-full max-w-5xl max-h-[90vh] overflow-y-auto p-6 md:p-8 relative dropdown-enter">
+    <button onclick="closeAdminDashboard()" class="absolute top-4 right-4 w-8 h-8 rounded-lg hover:bg-white/10 flex items-center justify-center transition"><i class="fas fa-times"></i></button>
+    <div class="mb-6">
+      <div class="flex items-center gap-3 mb-2">
+        <div class="w-12 h-12 rounded-xl gradient-bg flex items-center justify-center shadow-lg"><i class="fas fa-gauge-high text-white"></i></div>
+        <div><h2 class="font-display text-2xl font-black text-white">Admin Dashboard</h2><p class="text-gray-400 text-xs">Manage papers, view stats, export data</p></div>
+      </div>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+      <div class="glass rounded-xl p-4"><i class="fas fa-file-pdf text-brand-400 mb-2"></i><div class="text-2xl font-black text-white" id="aStatPapers">0</div><div class="text-xs text-gray-400">Total Papers</div></div>
+      <div class="glass rounded-xl p-4"><i class="fas fa-download text-emerald-400 mb-2"></i><div class="text-2xl font-black text-white" id="aStatDownloads">0</div><div class="text-xs text-gray-400">Downloads</div></div>
+      <div class="glass rounded-xl p-4"><i class="fas fa-book text-purple-400 mb-2"></i><div class="text-2xl font-black text-white" id="aStatSubjects">0</div><div class="text-xs text-gray-400">Subjects</div></div>
+      <div class="glass rounded-xl p-4"><i class="fas fa-cloud text-pink-400 mb-2"></i><div class="text-2xl font-black text-white" id="aStatSource">0</div><div class="text-xs text-gray-400">From DoE</div></div>
+    </div>
+    <div class="flex flex-wrap gap-2 mb-6">
+      <button onclick="exportData()" class="px-4 py-2 rounded-lg bg-emerald-500/20 text-emerald-300 hover:bg-emerald-500/30 transition text-sm font-semibold"><i class="fas fa-file-export mr-1"></i> Export .txt</button>
+      <button onclick="document.getElementById('importInput').click()" class="px-4 py-2 rounded-lg bg-blue-500/20 text-blue-300 hover:bg-blue-500/30 transition text-sm font-semibold"><i class="fas fa-file-import mr-1"></i> Import</button>
+      <input id="importInput" type="file" accept=".txt,.json" class="hidden" onchange="importData(event)" />
+      <button onclick="clearAllPapers()" class="px-4 py-2 rounded-lg bg-red-500/20 text-red-300 hover:bg-red-500/30 transition text-sm font-semibold"><i class="fas fa-trash mr-1"></i> Clear All</button>
+    </div>
+    <h3 class="font-display font-bold text-white mb-3">All Papers</h3>
+    <div id="adminPapersList" class="space-y-2 max-h-96 overflow-y-auto pr-2"></div>
+  </div>
+</div>
+
+<!-- ===== TOAST ===== -->
+<div id="toast" class="fixed bottom-6 right-6 z-[100] hidden">
+  <div class="glass-strong rounded-xl px-5 py-3 flex items-center gap-3 shadow-2xl">
+    <i id="toastIcon" class="fas fa-check-circle text-emerald-400"></i>
+    <span id="toastMsg" class="text-sm font-medium"></span>
+  </div>
+</div>
+
+<!-- ===== LOAD PAPERS DATA (all_papers_grouped.js) ===== -->
+<script src="all_papers_grouped.js"></script>
+
+<!-- ============================================================ -->
+<!-- MAIN SCRIPT -->
+<!-- ============================================================ -->
+<script>
+/* ============================================================
+   CONFIG
+   ============================================================ */
+const ADMIN_USER = "admin";
+const ADMIN_PASS = "admin123";
+const CATBOX_API = "https://catbox.moe/user/api.php";
+const STORAGE_KEY = "pastpapers_lk_v3";
+const AUTH_KEY = "pastpapers_lk_auth_v1";
+const DELETED_KEY = "pastpapers_deleted_v1";
+const PAGINATION_SIZE = 48;
+
+let papers = [];
+let isAdmin = false;
+let currentPage = 1;
+let filteredList = [];
+
+/* ============================================================
+   GROUPED → FLAT CONVERTER
+   ============================================================ */
+function detectExamFromTitle(title, subject) {
+  const t = ((title || "") + " " + (subject || "")).toLowerCase();
+  if (t.includes("advanced level") || /\ba\/l\b/.test(t)) return "A/L";
+  if (t.includes("ordinary level") || /\bo\/l\b/.test(t)) return "O/L";
+  if (t.includes("grade 5") || t.includes("grade five") || t.includes("scholarship") || t.includes("ශිෂ්‍යත්ව")) return "Grade 5";
+  return "Other";
+}
+
+function flattenGroupedData(grouped) {
+  const out = [];
+  if (!grouped || typeof grouped !== "object") return out;
+
+  for (const yearKey in grouped) {
+    const yearData = grouped[yearKey];
+    if (!yearData || typeof yearData !== "object") continue;
+
+    for (const bucket in yearData) {
+      const arr = yearData[bucket];
+      if (!Array.isArray(arr)) continue;
+
+      arr.forEach(p => {
+        const subject = p.subject_en || p.subject_si || p.subject_ta || "Unknown";
+        const paperTitle = p.title || `Paper ${p.id}`;
+        const exam = detectExamFromTitle(paperTitle, subject);
+        const year = p.year || yearKey;
+        const uploadedAt = p.created_date || new Date().toISOString();
+
+        (p.pdfs || []).forEach((pdf, idx) => {
+          if (!pdf || !pdf.url) return;
+          out.push({
+            id: `doe_${p.id}_${pdf.medium || 'M'}_${idx}`,
+            title: subject,                       // main heading
+            subtitle: paperTitle,                 // original DoE title
+            subject: subject,
+            exam: exam,
+            year: year,
+            medium: pdf.medium || "English",
+            url: pdf.url,
+            filename: pdf.filename || "",
+            downloads: 0,
+            uploader: "Department of Examinations",
+            source: "doenet",
+            uploadedAt: uploadedAt
+          });
+        });
+      });
+    }
+  }
+  return out;
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("year").textContent = new Date().getFullYear();
+  checkAuth();
+
+  ["loginModal", "uploadModal", "adminModal"].forEach(id => {
+    document.getElementById(id).addEventListener("click", (e) => {
+      if (e.target.id === id) {
+        e.target.classList.add("hidden");
+        e.target.classList.remove("flex");
+      }
+    });
+  });
+
+  loadPapersFromGrouped();
+  populateYearFilter();
+  renderPapers();
+  updateStats();
+
+  const status = document.getElementById("syncStatus");
+  if (papers.length > 0) {
+    status.textContent = `${papers.length} papers loaded`;
+  } else {
+    status.textContent = "No papers — check all_papers_grouped.js";
+  }
+});
+
+/* ============================================================
+   LOAD FROM GROUPED DATA
+   ============================================================ */
+function loadPapersFromGrouped() {
+  const grouped = window.ALL_PAPERS_GROUPED || null;
+  const doePapers = flattenGroupedData(grouped);
+
+  // From localStorage (user uploads + download counts)
+  let local = {};
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const arr = JSON.parse(raw);
+      if (Array.isArray(arr)) arr.forEach(p => { local[p.id] = p; });
+    }
+  } catch (e) {}
+
+  // Deleted IDs
+  let deleted = new Set();
+  try {
+    deleted = new Set(JSON.parse(localStorage.getItem(DELETED_KEY) || "[]"));
+  } catch (e) {}
+
+  const merged = [];
+  doePapers.forEach(p => {
+    if (deleted.has(p.id)) return;
+    if (local[p.id]) {
+      merged.push({ ...p, downloads: local[p.id].downloads || 0 });
+    } else {
+      merged.push(p);
+    }
+  });
+
+  // User uploads only (from localStorage)
+  Object.values(local).forEach(p => {
+    if (p.source === "user") merged.push(p);
+  });
+
+  papers = merged;
+  savePapers();
+}
+
+function savePapers() {
+  try {
+    // Only persist user-uploaded papers + download counts to keep localStorage small
+    const userPapers = papers.filter(p => p.source === "user");
+    const withCounts = papers
+      .filter(p => p.source !== "user" && (p.downloads || 0) > 0)
+      .map(p => ({ id: p.id, downloads: p.downloads, source: p.source }));
+    // Store user papers fully + a lightweight download map
+    localStorage.setItem(STORAGE_KEY, JSON.stringify([...userPapers, ...withCounts.map(x => ({ id:x.id, downloads:x.downloads, source:x.source, _countOnly:true }))]));
+  } catch (e) { console.error("Save failed:", e); }
+}
+
+/* ============================================================
+   AUTH
+   ============================================================ */
+function checkAuth() {
+  isAdmin = localStorage.getItem(AUTH_KEY) === "1";
+  updateAuthUI();
+}
+function updateAuthUI() {
+  const loginBtn = document.getElementById("loginBtn");
+  const logoutBtn = document.getElementById("logoutBtn");
+  const banner = document.getElementById("adminBanner");
+  if (isAdmin) {
+    loginBtn.classList.add("hidden");
+    logoutBtn.classList.remove("hidden");
+    banner.classList.remove("hidden");
+  } else {
+    loginBtn.classList.remove("hidden");
+    logoutBtn.classList.add("hidden");
+    banner.classList.add("hidden");
+  }
+}
+function adminLogin(e) {
+  e.preventDefault();
+  const u = document.getElementById("loginUser").value.trim();
+  const p = document.getElementById("loginPass").value;
+  const err = document.getElementById("loginError");
+  if (u === ADMIN_USER && p === ADMIN_PASS) {
+    localStorage.setItem(AUTH_KEY, "1");
+    isAdmin = true;
+    updateAuthUI();
+    closeLoginModal();
+    showToast("Welcome back, admin!", "success");
+    renderPapers();
+  } else {
+    err.textContent = "Invalid username or password";
+    err.classList.remove("hidden");
+  }
+}
+function adminLogout() {
+  localStorage.removeItem(AUTH_KEY);
+  isAdmin = false;
+  updateAuthUI();
+  renderPapers();
+  showToast("Logged out", "info");
+}
+
+/* ============================================================
+   MODALS
+   ============================================================ */
+function openLoginModal() { document.getElementById("loginModal").classList.remove("hidden"); document.getElementById("loginModal").classList.add("flex"); setTimeout(() => document.getElementById("loginUser").focus(), 100); }
+function closeLoginModal() { document.getElementById("loginModal").classList.add("hidden"); document.getElementById("loginModal").classList.remove("flex"); document.getElementById("loginError").classList.add("hidden"); document.getElementById("loginUser").value = ""; document.getElementById("loginPass").value = ""; }
+function openUploadModal() { document.getElementById("uploadModal").classList.remove("hidden"); document.getElementById("uploadModal").classList.add("flex"); }
+function closeUploadModal() { document.getElementById("uploadModal").classList.add("hidden"); document.getElementById("uploadModal").classList.remove("flex"); resetUploadForm(); }
+function openAdminDashboard() { if (!isAdmin) { showToast("Please login first", "error"); return; } document.getElementById("adminModal").classList.remove("hidden"); document.getElementById("adminModal").classList.add("flex"); renderAdminDashboard(); }
+function closeAdminDashboard() { document.getElementById("adminModal").classList.add("hidden"); document.getElementById("adminModal").classList.remove("flex"); }
+function toggleMobileMenu() { document.getElementById("mobileMenu").classList.toggle("hidden"); }
+
+/* ============================================================
+   UPLOAD
+   ============================================================ */
+let selectedFile = null;
+function handleFileSelect(e) { const f = e.target.files[0]; if (f) setFile(f); }
+function handleFileDrop(e) { e.preventDefault(); document.getElementById("dropZone").classList.remove("border-brand-400", "bg-brand-500/10"); const f = e.dataTransfer.files[0]; if (f) setFile(f); }
+function setFile(f) {
+  if (f.type !== "application/pdf" && !f.name.toLowerCase().endsWith(".pdf")) { showToast("Only PDF files allowed", "error"); return; }
+  if (f.size > 200 * 1024 * 1024) { showToast("File too large (max 200 MB)", "error"); return; }
+  selectedFile = f;
+  document.getElementById("dropText").innerHTML = `<i class="fas fa-file-pdf text-emerald-400 mr-2"></i>${f.name} <span class="text-gray-500 text-xs">(${(f.size/1024/1024).toFixed(2)} MB)</span>`;
+  document.getElementById("dropZone").classList.add("border-emerald-400", "bg-emerald-500/5");
+}
+function resetUploadForm() {
+  selectedFile = null;
+  document.querySelector("#uploadModal form").reset();
+  document.getElementById("dropText").innerHTML = 'Drop PDF here or click to browse';
+  document.getElementById("dropZone").classList.remove("border-emerald-400", "bg-emerald-500/5");
+  document.getElementById("uploadProgress").classList.add("hidden");
+  document.getElementById("uploadError").classList.add("hidden");
+  document.getElementById("progressBar").style.width = "0%";
+}
+async function uploadPaper(e) {
+  e.preventDefault();
+  const errEl = document.getElementById("uploadError");
+  const prog = document.getElementById("uploadProgress");
+  const bar = document.getElementById("progressBar");
+  const pct = document.getElementById("progressPct");
+  const label = document.getElementById("progressLabel");
+  const btn = document.getElementById("uploadBtn");
+  errEl.classList.add("hidden");
+  if (!selectedFile) { errEl.textContent = "Please select a PDF file"; errEl.classList.remove("hidden"); return; }
+
+  const meta = {
+    title: document.getElementById("upTitle").value.trim(),
+    subject: document.getElementById("upSubject").value.trim(),
+    exam: document.getElementById("upExam").value,
+    year: document.getElementById("upYear").value.trim(),
+    medium: document.getElementById("upMedium").value,
+    uploader: document.getElementById("upUploader").value.trim() || "Anonymous",
+  };
+
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner spin-slow mr-2"></i> Uploading...';
+  prog.classList.remove("hidden");
+
+  try {
+    label.textContent = "Uploading to Catbox.moe...";
+    const fd = new FormData();
+    fd.append("reqtype", "fileupload");
+    fd.append("fileToUpload", selectedFile);
+    const url = await uploadToCatbox(fd, (p) => { bar.style.width = p + "%"; pct.textContent = p + "%"; });
+    if (!url || !url.startsWith("http")) throw new Error("Upload failed: " + url);
+
+    const paper = {
+      id: "u_" + Date.now() + "_" + Math.random().toString(36).slice(2, 8),
+      ...meta, url,
+      filename: selectedFile.name,
+      size: selectedFile.size,
+      downloads: 0,
+      uploadedAt: new Date().toISOString(),
+      source: "user",
+    };
+    papers.unshift(paper);
+    savePapers();
+    label.textContent = "Done!"; bar.style.width = "100%"; pct.textContent = "100%";
+    showToast("Paper uploaded!", "success");
+    setTimeout(() => {
+      closeUploadModal();
+      populateYearFilter();
+      renderPapers();
+      updateStats();
+      document.getElementById("papers").scrollIntoView({ behavior: "smooth" });
+    }, 800);
+  } catch (err) {
+    console.error(err);
+    errEl.textContent = err.message || "Upload failed";
+    errEl.classList.remove("hidden");
+    prog.classList.add("hidden");
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-cloud-arrow-up mr-2"></i> Upload';
+  }
+}
+function uploadToCatbox(formData, onProgress) {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", CATBOX_API, true);
+    xhr.upload.onprogress = (e) => { if (e.lengthComputable) onProgress(Math.round((e.loaded / e.total) * 100)); };
+    xhr.onload = () => { if (xhr.status === 200) resolve(xhr.responseText.trim()); else reject(new Error("Catbox error " + xhr.status)); };
+    xhr.onerror = () => reject(new Error("Network error"));
+    xhr.send(formData);
+  });
+}
+
+/* ============================================================
+   DOWNLOAD
+   ============================================================ */
+function downloadPaper(id) {
+  const p = papers.find(x => x.id === id);
+  if (!p) return;
+  p.downloads = (p.downloads || 0) + 1;
+  savePapers();
+  document.querySelectorAll(`[data-pid="${id}"] .dl-count`).forEach(el => el.textContent = p.downloads);
+  updateStats();
+  window.open(p.url, "_blank");
+  showToast("Download started!", "success");
+}
+
+/* ============================================================
+   RENDER
+   ============================================================ */
+function renderPapers(resetPage = true) {
+  if (resetPage) currentPage = 1;
+  const grid = document.getElementById("papersGrid");
+  const empty = document.getElementById("emptyState");
+  const count = document.getElementById("resultCount");
+  const loadWrap = document.getElementById("loadMoreWrap");
+
+  const fSearch = (document.getElementById("filterSearch").value || "").toLowerCase().trim();
+  const fExam = document.getElementById("filterExam").value;
+  const fYear = document.getElementById("filterYear").value;
+  const fMedium = document.getElementById("filterMedium").value;
+
+  filteredList = papers.filter(p => {
+    if (fExam && p.exam !== fExam) return false;
+    if (fYear && String(p.year) !== String(fYear)) return false;
+    if (fMedium && p.medium !== fMedium) return false;
+    if (fSearch) {
+      const hay = ((p.title || "") + " " + (p.subtitle || "") + " " + (p.subject || "") + " " + p.year + " " + p.exam + " " + p.medium).toLowerCase();
+      if (!hay.includes(fSearch)) return false;
+    }
+    return true;
+  });
+
+  filteredList.sort((a, b) => {
+    const ya = parseInt(a.year) || 0, yb = parseInt(b.year) || 0;
+    if (yb !== ya) return yb - ya;
+    return (b.uploadedAt || "").localeCompare(a.uploadedAt || "");
+  });
+
+  count.textContent = `${filteredList.length} ${filteredList.length === 1 ? "paper" : "papers"} found`;
+
+  if (!filteredList.length) {
+    grid.innerHTML = "";
+    empty.classList.remove("hidden");
+    loadWrap.classList.add("hidden");
+    return;
+  }
+  empty.classList.add("hidden");
+
+  const showCount = currentPage * PAGINATION_SIZE;
+  const showList = filteredList.slice(0, showCount);
+  grid.innerHTML = showList.map(renderCard).join("");
+
+  if (showList.length < filteredList.length) loadWrap.classList.remove("hidden");
+  else loadWrap.classList.add("hidden");
+}
+
+function renderCard(p) {
+  const examColor = { "O/L": "from-blue-500 to-cyan-500", "A/L": "from-purple-500 to-pink-500", "Grade 5": "from-amber-500 to-orange-500", "Other": "from-gray-500 to-slate-500" }[p.exam] || "from-brand-500 to-purple-500";
+  const mediumIcon = { "Sinhala": "🇱🇰", "English": "🇬🇧", "Tamil": "🇮🇳" }[p.medium] || "📄";
+  const badge = p.source === "user"
+    ? `<span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300">COMMUNITY</span>`
+    : `<span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-brand-500/20 text-brand-300">DoE</span>`;
+
+  return `
+    <div data-pid="${p.id}" class="glass rounded-2xl p-5 card-hover flex flex-col">
+      <div class="flex items-start justify-between mb-3">
+        <div class="w-12 h-12 rounded-xl bg-gradient-to-br ${examColor} flex items-center justify-center shadow-lg"><i class="fas fa-file-pdf text-white"></i></div>
+        <div class="flex flex-col items-end gap-1">
+          <span class="text-[10px] font-bold px-2 py-1 rounded-md bg-white/10 text-gray-300">${p.exam}</span>
+          <span class="text-[10px] text-gray-500">${mediumIcon} ${p.medium}</span>
+        </div>
+      </div>
+      <div class="mb-1">${badge}</div>
+      <h3 class="font-display font-bold text-white text-base leading-tight mb-1 line-clamp-2">${escapeHtml(p.title)}</h3>
+      <p class="text-xs text-gray-400 mb-3">${escapeHtml(p.subtitle || p.subject)} • ${p.year}</p>
+      <div class="flex items-center justify-between text-xs text-gray-500 mb-4 mt-auto">
+        <span><i class="fas fa-download mr-1"></i> <span class="dl-count">${p.downloads || 0}</span></span>
+        <span class="truncate max-w-[100px]" title="${escapeHtml(p.uploader || '')}"><i class="fas fa-user mr-1"></i> ${escapeHtml(p.uploader || "Anonymous")}</span>
+      </div>
+      <div class="flex gap-2">
+        <button onclick="downloadPaper('${p.id}')" class="flex-1 py-2.5 rounded-lg gradient-bg text-white text-sm font-semibold hover:shadow-lg hover:shadow-brand-500/40 transition"><i class="fas fa-download mr-1"></i> Download</button>
+        ${isAdmin ? `<button onclick="deletePaper('${p.id}')" class="w-10 h-10 rounded-lg bg-red-500/20 text-red-300 hover:bg-red-500/30 transition flex items-center justify-center" title="Delete"><i class="fas fa-trash text-sm"></i></button>` : ''}
+      </div>
+    </div>
+  `;
+}
+
+function loadMore() { currentPage++; renderPapers(false); showToast("Loaded more papers", "info"); }
+function escapeHtml(s) { return String(s || "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
+
+/* ============================================================
+   FILTERS
+   ============================================================ */
+function applyFilters() { renderPapers(); }
+function onSearchInput(v) { document.getElementById("filterSearch").value = v; renderPapers(); if (v) scrollToPapers(); }
+function scrollToPapers() { document.getElementById("papers").scrollIntoView({ behavior: "smooth" }); }
+function populateYearFilter() {
+  const sel = document.getElementById("filterYear");
+  const years = [...new Set(papers.map(p => p.year).filter(y => y && y !== "—"))].sort((a, b) => (parseInt(b) || 0) - (parseInt(a) || 0));
+  sel.innerHTML = '<option value="">All Years</option>' + years.map(y => `<option value="${y}">${y}</option>`).join("");
+}
+
+/* ============================================================
+   STATS
+   ============================================================ */
+function updateStats() {
+  const total = papers.length;
+  const downloads = papers.reduce((s, p) => s + (p.downloads || 0), 0);
+  const subjects = new Set(papers.map(p => p.subject).filter(Boolean)).size;
+  document.getElementById("statPapers").textContent = total.toLocaleString();
+  document.getElementById("statDownloads").textContent = downloads.toLocaleString();
+  document.getElementById("statSubjects").textContent = subjects.toLocaleString();
+}
+
+/* ============================================================
+   ADMIN DASHBOARD
+   ============================================================ */
+function renderAdminDashboard() {
+  const total = papers.length;
+  const downloads = papers.reduce((s, p) => s + (p.downloads || 0), 0);
+  const subjects = new Set(papers.map(p => p.subject).filter(Boolean)).size;
+  const doe = papers.filter(p => p.source === "doenet").length;
+  document.getElementById("aStatPapers").textContent = total;
+  document.getElementById("aStatDownloads").textContent = downloads;
+  document.getElementById("aStatSubjects").textContent = subjects;
+  document.getElementById("aStatSource").textContent = doe;
+
+  const list = document.getElementById("adminPapersList");
+  if (!papers.length) { list.innerHTML = `<div class="text-center text-gray-500 py-8 text-sm">No papers yet</div>`; return; }
+
+  const showList = papers.slice(0, 200);
+  list.innerHTML = showList.map(p => `
+    <div class="glass rounded-xl p-3 flex items-center gap-3">
+      <div class="w-10 h-10 rounded-lg gradient-bg flex items-center justify-center flex-shrink-0"><i class="fas fa-file-pdf text-white text-sm"></i></div>
+      <div class="flex-1 min-w-0">
+        <div class="text-sm font-semibold text-white truncate">${escapeHtml(p.title)}</div>
+        <div class="text-xs text-gray-500 truncate">${escapeHtml(p.subject)} • ${p.year} • ${p.medium} • <i class="fas fa-download mx-1"></i>${p.downloads || 0} • <span class="text-[10px] ${p.source === 'user' ? 'text-emerald-400' : 'text-brand-400'}">${p.source}</span></div>
+      </div>
+      <div class="flex gap-1.5">
+        <button onclick="downloadPaper('${p.id}')" class="w-8 h-8 rounded-lg bg-brand-500/20 text-brand-300 hover:bg-brand-500/30 flex items-center justify-center" title="Download"><i class="fas fa-download text-xs"></i></button>
+        <button onclick="deletePaper('${p.id}')" class="w-8 h-8 rounded-lg bg-red-500/20 text-red-300 hover:bg-red-500/30 flex items-center justify-center" title="Delete"><i class="fas fa-trash text-xs"></i></button>
+      </div>
+    </div>
+  `).join("");
+
+  if (papers.length > showList.length) list.innerHTML += `<div class="text-center text-gray-500 py-4 text-xs">Showing first ${showList.length} of ${papers.length}</div>`;
+}
+
+function deletePaper(id) {
+  if (!confirm("Delete this paper?")) return;
+  papers = papers.filter(p => p.id !== id);
+  try {
+    const del = JSON.parse(localStorage.getItem(DELETED_KEY) || "[]");
+    if (!del.includes(id)) del.push(id);
+    localStorage.setItem(DELETED_KEY, JSON.stringify(del));
+  } catch (e) {}
+  savePapers();
+  renderPapers();
+  updateStats();
+  renderAdminDashboard();
+  showToast("Paper deleted", "info");
+}
+
+function clearAllPapers() {
+  if (!confirm("⚠️ Delete ALL papers? This cannot be undone!")) return;
+  if (!confirm("Are you REALLY sure?")) return;
+  papers = [];
+  savePapers();
+  localStorage.removeItem(DELETED_KEY);
+  renderPapers();
+  updateStats();
+  renderAdminDashboard();
+  showToast("All papers cleared", "info");
+}
+
+/* ============================================================
+   EXPORT / IMPORT
+   ============================================================ */
+function exportData() {
+  const data = { version: 3, exportedAt: new Date().toISOString(), totalPapers: papers.length, papers };
+  const text = JSON.stringify(data, null, 2);
+  const blob = new Blob([text], { type: "text/plain" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = `pastpapers_backup_${Date.now()}.txt`; a.click();
+  URL.revokeObjectURL(url);
+  showToast("Data exported", "success");
+}
+
+function importData(e) {
+  const f = e.target.files[0];
+  if (!f) return;
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    try {
+      const parsed = JSON.parse(ev.target.result);
+      const arr = Array.isArray(parsed) ? parsed : (parsed.papers || []);
+      if (!Array.isArray(arr)) throw new Error("Invalid format");
+      if (!confirm(`Import ${arr.length} papers? This will REPLACE current data.`)) return;
+      papers = arr;
+      savePapers();
+      populateYearFilter();
+      renderPapers();
+      updateStats();
+      renderAdminDashboard();
+      showToast(`Imported ${arr.length} papers`, "success");
+    } catch (err) { console.error(err); showToast("Invalid backup file", "error"); }
+  };
+  reader.readAsText(f);
+}
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+function showToast(msg, type = "success") {
+  const toast = document.getElementById("toast");
+  const icon = document.getElementById("toastIcon");
+  const msgEl = document.getElementById("toastMsg");
+  const icons = { success: ["fa-check-circle", "text-emerald-400"], error: ["fa-exclamation-circle", "text-red-400"], info: ["fa-info-circle", "text-blue-400"] };
+  const [ic, cls] = icons[type] || icons.info;
+  icon.className = `fas ${ic} ${cls}`;
+  msgEl.textContent = msg;
+  toast.classList.remove("hidden");
+  clearTimeout(window._toastT);
+  window._toastT = setTimeout(() => toast.classList.add("hidden"), 3000);
+}
+</script>
+
+</body>
+</html>
