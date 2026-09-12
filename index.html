@@ -736,7 +736,7 @@ function renderPaperDetailCard(p) {
         </div>
 
         <div class="flex flex-col sm:flex-row gap-3">
-          <button onclick="downloadPaper('${p.id}')" class="flex-1 py-4 rounded-xl gradient-bg text-white font-bold text-base shadow-lg shadow-brand-500/30 hover:shadow-xl transition"><i class="fas fa-download mr-2"></i> Download PDF</button>
+          <button onclick="downloadPaper('${p.id}')" data-pid="${p.id}" class="dl-trigger flex-1 py-4 rounded-xl gradient-bg text-white font-bold text-base shadow-lg shadow-brand-500/30 hover:shadow-xl transition"><i class="fas fa-download mr-2"></i> Download PDF</button>
           <button onclick="goHome()" class="py-4 px-6 rounded-xl glass font-semibold text-white hover:bg-white/10 transition"><i class="fas fa-layer-group mr-2"></i> More Papers</button>
         </div>
       </div>
@@ -842,15 +842,46 @@ function uploadToCatbox(formData, onProgress) {
 /* ============================================================
    DOWNLOAD
    ============================================================ */
-function downloadPaper(id) {
+// Forces the PDF to download straight from our own page (via blob),
+// instead of just opening/redirecting to the catbox.moe link.
+async function downloadPaper(id) {
   const p = papers.find(x => x.id === id);
   if (!p) return;
-  p.downloads = (p.downloads || 0) + 1;
-  savePapers();
-  document.querySelectorAll(`[data-pid="${id}"] .dl-count`).forEach(el => el.textContent = p.downloads);
-  updateStats();
-  window.open(p.url, "_blank");
-  showToast("Download started!", "success");
+
+  const btns = document.querySelectorAll(`.dl-trigger[data-pid="${id}"]`);
+  btns.forEach(b => { b.dataset.origHtml = b.innerHTML; b.disabled = true; b.innerHTML = '<i class="fas fa-spinner spin-slow mr-2"></i> Downloading...'; });
+  showToast("Preparing download...", "info");
+
+  const finish = (ok) => {
+    p.downloads = (p.downloads || 0) + 1;
+    savePapers();
+    document.querySelectorAll(`[data-pid="${id}"] .dl-count`).forEach(el => el.textContent = p.downloads);
+    updateStats();
+    btns.forEach(b => { b.disabled = false; if (b.dataset.origHtml) b.innerHTML = b.dataset.origHtml; });
+    showToast(ok ? "Download started!" : "Download started (opened in a new tab)", ok ? "success" : "info");
+  };
+
+  try {
+    const res = await fetch(p.url);
+    if (!res.ok) throw new Error("Network response was not ok");
+    const blob = await res.blob();
+    const blobUrl = URL.createObjectURL(blob);
+    const filename = (p.filename && p.filename.trim()) || `${(p.title || "paper").replace(/[^\w\- ]+/g, "").trim() || "paper"} - ${p.year || ""} - ${p.medium || ""}.pdf`;
+
+    const a = document.createElement("a");
+    a.href = blobUrl;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(blobUrl), 4000);
+    finish(true);
+  } catch (err) {
+    console.error("Direct download failed, falling back to opening the file:", err);
+    // Some hosts don't allow cross-origin fetch — fall back to opening the file
+    window.open(p.url, "_blank");
+    finish(false);
+  }
 }
 
 /* ============================================================
